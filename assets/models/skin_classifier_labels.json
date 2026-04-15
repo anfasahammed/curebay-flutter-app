@@ -1,0 +1,20 @@
+{
+  "classes": [
+    "skin_lesion_serious",
+    "skin_normal",
+    "skin_rash"
+  ],
+  "symptom_mapping": {
+    "skin_normal": "skin_normal",
+    "skin_rash": "sym_skin_rash",
+    "skin_lesion_serious": "sym_skin_ulcer"
+  },
+  "input_size": 224,
+  "normalization": "efficientnet_native",
+  "serious_threshold": 0.3,
+  "model_metrics": {
+    "overall_accuracy": 0.862,
+    "serious_recall_argmax": 0.693,
+    "macro_avg_recall": 0.834
+  }
+}
