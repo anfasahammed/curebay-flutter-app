@@ -382,10 +382,4 @@ The AI models are trained on synthetic data validated against published clinical
 
 ---
 
-## 📄 License
-
-This project is open-source for educational and research purposes. Commercial deployment in healthcare contexts requires regulatory clearance (CDSCO in India) and should not be done without further clinical validation.
-
----
-
 **Built with care for rural India 🇮🇳**
