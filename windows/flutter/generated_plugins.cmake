@@ -8,11 +8,13 @@ list(APPEND FLUTTER_PLUGIN_LIST
   printing
   share_plus
   url_launcher_windows
+  vosk_flutter
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
   jni
   onnxruntime
+  tflite_flutter
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)

@@ -31,20 +31,28 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
-
-  final _screens = const [
-    HomeScreen(),
-    RecordsScreen(),
-    AboutScreen(),
-  ];
+  // Key to force-rebuild records screen each time tab is tapped
+  Key _recordsKey = UniqueKey();
 
   @override
   Widget build(BuildContext context) {
+    Widget body;
+    switch (_currentIndex) {
+      case 0:
+        body = const HomeScreen();
+        break;
+      case 1:
+        body = RecordsScreen(key: _recordsKey);
+        break;
+      case 2:
+        body = const AboutScreen();
+        break;
+      default:
+        body = const HomeScreen();
+    }
+
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: body,
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -59,7 +67,11 @@ class _MainShellState extends State<MainShell> {
         child: SafeArea(
           child: BottomNavigationBar(
             currentIndex: _currentIndex,
-            onTap: (i) => setState(() => _currentIndex = i),
+            onTap: (i) => setState(() {
+              _currentIndex = i;
+              // Force fresh records screen each time it's selected
+              if (i == 1) _recordsKey = UniqueKey();
+            }),
             type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
             selectedItemColor: CureBayColors.navy,

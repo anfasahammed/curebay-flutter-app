@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import '../theme/curebay_theme.dart';
 import 'chips_screen.dart';
+import 'camera_screen.dart';
 
-/// Stage 1: Worker picks the chief complaint from 8 big icon cards
+/// Stage 1: Worker picks the chief complaint from 8 big icon cards.
+/// If they pick Skin, the camera opens first to capture a photo,
+/// then routes to chips with the classifier's symptom pre-ticked.
 class ComplaintScreen extends StatelessWidget {
   final Map<String, dynamic> demographics;
 
   const ComplaintScreen({super.key, required this.demographics});
 
-  // Maps to the 8 complaints in chief_complaints.yaml
   static const List<_Complaint> complaints = [
     _Complaint('fever', '🤒', 'Fever', 'बुखार'),
     _Complaint('respiratory', '🤧', 'Cough / Breath', 'खांसी / सांस'),
@@ -19,6 +21,38 @@ class ComplaintScreen extends StatelessWidget {
     _Complaint('maternal_child', '🤰', 'Pregnancy/Child', 'गर्भ / बच्चा'),
     _Complaint('injury_bite', '🐍', 'Injury / Bite', 'चोट / काटना'),
   ];
+
+  Future<void> _onComplaintTap(BuildContext ctx, _Complaint complaint) async {
+    List<String> preTicked = [];
+
+    // Skin complaint → open camera first
+    if (complaint.key == 'skin') {
+      final result = await Navigator.push<Map<String, dynamic>?>(
+        ctx,
+        MaterialPageRoute(builder: (_) => const CameraScreen()),
+      );
+      if (result != null) {
+        final symptomId = result['symptom_id'] as String?;
+        if (symptomId != null && symptomId.isNotEmpty) {
+          preTicked = [symptomId];
+        }
+      }
+      // If user skipped camera (result is null), just continue to chips
+    }
+
+    if (!ctx.mounted) return;
+    Navigator.push(
+      ctx,
+      MaterialPageRoute(
+        builder: (_) => ChipsScreen(
+          demographics: demographics,
+          complaintKey: complaint.key,
+          complaintLabel: complaint.labelEn,
+          preTickedSymptoms: preTicked,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +99,7 @@ class ComplaintScreen extends StatelessWidget {
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.all(16),
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
@@ -75,18 +108,7 @@ class ComplaintScreen extends StatelessWidget {
                 itemCount: complaints.length,
                 itemBuilder: (_, i) => _ComplaintTile(
                   complaint: complaints[i],
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ChipsScreen(
-                          demographics: demographics,
-                          complaintKey: complaints[i].key,
-                          complaintLabel: complaints[i].labelEn,
-                        ),
-                      ),
-                    );
-                  },
+                  onTap: () => _onComplaintTap(context, complaints[i]),
                 ),
               ),
             ),

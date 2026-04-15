@@ -6,11 +6,13 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_linux
   printing
   url_launcher_linux
+  vosk_flutter
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
   jni
   onnxruntime
+  tflite_flutter
 )
 
 set(PLUGIN_BUNDLED_LIBRARIES)
