@@ -7,7 +7,7 @@
 
 ## 📥 Download APK
 
-**[👉 Download CureBay Assist APK (~80 MB)](LINK_TO_APK_HERE)**
+**[👉 Download CureBay Assist APK (~80 MB)]([App]https://drive.google.com/file/d/13bpFIAi0WJJg2MxXGqP4rktxEolMnDo6/view?usp=sharing**
 
 > Compatible with: Android 7.0+ (API 24), 2 GB RAM minimum
 > Runs **100% offline**. No internet required after install.
